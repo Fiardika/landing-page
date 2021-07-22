@@ -49,7 +49,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  namesace: production
+  namespace: production
   annotations:
 spec:
   rules:
