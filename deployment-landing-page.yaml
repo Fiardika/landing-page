@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: landing-page-deployment
+  labels:
+    app: landing-page-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: landing-page-deployment
+  template:
+    metadata:
+      labels:
+        app: landing-page-deployment
+    spec:
+      containers:
+      - name: landing-page-deployment
+        image: fiardika/landing-page-jenkins:latest
+        ports:
+        - containerPort: 80
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: landing-page-service
+spec:
+  selector:
+    app: landing-page-deployment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+spec:
+  rules:
+  - host: fiardika.fiardika.xyz
+    http:
+      paths:
+        - backend:
+            serviceName: landing-page-service
+            servicePort: 80
